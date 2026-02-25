@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Gateway</title>
+    <style>
+        body {
+            background: #0f172a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+        .gate-container { text-align: center; z-index: 2; }
+        .launch-btn {
+            padding: 20px 50px;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #00d4ff;
+            background: transparent;
+            border: 2px solid #00d4ff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+        .launch-btn:hover {
+            background: #00d4ff;
+            color: #0f172a;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+        .launch-btn:active { transform: scale(0.98); }
+        p { color: #64748b; margin-top: 20px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <div class="gate-container">
+        <button class="launch-btn" onmouseup="deployWorkspace()">Initialize Session</button>
+        <p>Generates a refresh-persistent isolated environment</p>
+    </div>
+
+    <script>
+        function deployWorkspace() {
+            // This is the entire HTML code for your Secure Workspace
+            const workspaceHTML = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Workspace</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh; color: #eaeaea; padding-top: 60px;
+        }
+        .status-bar {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(0, 0, 0, 0.9); padding: 10px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.8rem; border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+            font-family: monospace; z-index: 1000;
+        }
+        .dot { width: 8px; height: 8px; background: #00ff00; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; margin-bottom: 50px; }
+        h1 { font-size: 2.5rem; background: linear-gradient(90deg, #00d4ff, #7b2cbf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .card {
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);
+            border-radius: 15px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.3s ease;
+        }
+        .card:hover { border-color: #00d4ff; background: rgba(255, 255, 255, 0.05); }
+        .btn {
+            margin-top: 20px; padding: 10px 20px; 
+            background: #7b2cbf; color: white; border: none; 
+            border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+        .btn:hover { background: #9d4edd; }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <div style="display:flex; align-items:center; gap:8px;">
+            <div class="dot"></div> SESSION: ACTIVE [PERSISTENT BLOB]
+        </div>
+        <div>SECURE_OS v1.0.4</div>
+    </div>
+    <div class="container">
+        <header>
+            <h1>Secure Workspace</h1>
+            <p style="color:#888">Environment decoupled from source origin.</p>
+        </header>
+        <div class="grid">
+            <div class="card">
+                <h3>Encrypted Notes</h3>
+                <p>Temporary memory storage for sensitive text data.</p>
+                <button class="btn" onclick="alert('Module Loaded')">Launch</button>
+            </div>
+            <div class="card">
+                <h3>Network Proxy</h3>
+                <p>Route requests through isolated fetch headers.</p>
+                <button class="btn" onclick="alert('Proxy Active')">Configure</button>
+            </div>
+            <div class="card">
+                <h3>Clear Trace</h3>
+                <p>Immediately wipe current blob session and close tab.</p>
+                <button class="btn" style="background:#e63946" onclick="window.close()">Self Destruct</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>`;
+
+            // STEP 1: Create a Blob containing the HTML
+            const blob = new Blob([workspaceHTML], { type: 'text/html' });
+            
+            // STEP 2: Create a URL for that Blob
+            const blobUrl = URL.createObjectURL(blob);
+            
+            // STEP 3: Open the Blob URL
+            // This URL will look like blob:null/unique-id
+            const newWin = window.open(blobUrl, '_blank');
+
+            if (!newWin) {
+                alert("Pop-up blocked! Please allow pop-ups for this site to launch the workspace.");
+            }
+        }
+    </script>
+</body>
+</html>
